@@ -20,11 +20,19 @@ import org.springframework.web.bind.annotation.RestController;
  */
 public class CustomAnnotationControlController {
 
+    /**
+     * curl --location --request POST 'http://localhost:8080/api/v1/client/new'
+     */
+
     @PostMapping(value = "/new")
     @ApiVersion("1")
     public ResponseEntity<?> addNewV1() {
         return ResponseEntity.ok("Client v1 added");
     }
+
+    /**
+     * curl --location --request POST 'http://localhost:8080/api/v2/client/new'
+     */
 
     @PostMapping(value = "/new")
     @ApiVersion("2")
