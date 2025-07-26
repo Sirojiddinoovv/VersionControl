@@ -1,3 +1,5 @@
 spring:
   application:
     name: VersionControlDemo
+  main:
+    allow-bean-definition-overriding: true
