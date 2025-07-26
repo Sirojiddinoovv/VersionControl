@@ -25,7 +25,7 @@ public class ParamsControlController {
      */
 
     @PostMapping(value = "/create", params = "version=1")
-    public ResponseEntity<String> addNewCardV1() {
+    public ResponseEntity<String> addNewV1() {
         return ResponseEntity.ok("Transaction v1");
     }
 
@@ -34,7 +34,7 @@ public class ParamsControlController {
      */
 
     @PostMapping(value = "/create", params = "version=2")
-    public ResponseEntity<String> addNewCardV2() {
+    public ResponseEntity<String> addNewV2() {
         return ResponseEntity.ok("Transaction v2");
     }
 
