@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/card")
-public class CardController {
+public class MediaTypeControlController {
 
     /**
      * curl --location --request POST 'http://localhost:8080/api/card/new' \
