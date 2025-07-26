@@ -9,13 +9,28 @@
 ### 1. ✅ Версионирование через `@ApiVersion` + путь `/v1/...`
 
 ```java
-@ApiVersion("1")
 @RestController
 @RequestMapping("/api/client")
-public class ClientControllerV1 {
-    @PostMapping("/new")
-    public ResponseEntity<?> createClient(@RequestBody DepositRequestV1 request) { ... }
+/**
+ *     "error": "Not Found" if version not set
+ */
+public class CustomAnnotationControlController {
+
+
+    @PostMapping(value = "/new")
+    @ApiVersion("1")
+    public ResponseEntity<?> addNewV1() {
+        return ResponseEntity.ok("Client v1 added");
+    }
+
+
+    @PostMapping(value = "/new")
+    @ApiVersion("2")
+    public ResponseEntity<?> addNewV2() {
+        return ResponseEntity.ok("Client v2 added");
+    }
 }
+
 ```
 
 📎 Пример запроса:
@@ -52,16 +67,37 @@ curl --location --request POST 'http://localhost:8080/api/loan/new' \
 @RestController
 @RequestMapping("/api/card")
 public class MediaTypeControlController {
-    @PostMapping(value = "/new", consumes = "application/vnd.company.v1+json")
-    public ResponseEntity<?> v1() { ... }
+
+
+    @PostMapping(
+            value = "/new",
+            produces = "application/vnd.company.api.v1+json"
+    )
+    public ResponseEntity<?> addNewCardV1() {
+        //todo call service
+
+        return ResponseEntity.ok("Card v1 added");
+    }
+
+
+    @PostMapping(
+            value = "/new",
+            produces = "application/vnd.company.api.v2+json"
+    )
+    public ResponseEntity<?> addNewCardV2() {
+        //todo call service
+
+        return ResponseEntity.ok("Card v2 added");
+    }
 }
+
 ```
 
 📎 Пример запроса:
 
 ```bash
 curl --location --request POST 'http://localhost:8080/api/card/new' \
---header 'Content-Type: application/vnd.company.v1+json'
+--header 'Accept: application/vnd.company.api.v1+json'
 ```
 
 ---
@@ -85,7 +121,7 @@ curl --location --request POST 'http://localhost:8080/api/transaction/new?versio
 
 ---
 
-### 5. 📦 Версионирование через тело запроса (поле `version`)
+### 5. 📦 Версионирование через тело запроса (поле `type`)
 
 ```java
 @RestController
@@ -139,36 +175,19 @@ curl --location --request POST 'http://localhost:8080/api/v1/account/new'
 
 ---
 
-## 🧪 DTO-запросы
-
-```java
-// V1
-public class DepositRequestV1 implements DepositRequest {
-    private Long amount;
-}
-
-// V2
-public class DepositRequestV2 implements DepositRequest {
-    private String name;
-    private Long amount;
-}
-```
-
----
 
 ## 🔄 Используемые технологии
 
-- Spring Boot 4 (snapshot)
+- Spring Boot 3.5.4
 - Jackson `@JsonTypeInfo` для полиморфной сериализации
 - Кастомная аннотация `@ApiVersion`
 - `WebMvcConfigurationSupport` и `RequestMappingHandlerMapping`
 
 ---
 
-## 🧰 Как запустить
 
-```bash
-./gradlew bootRun
+```Примечание
+Хотел добавить поддержку параметра version «из коробки» в Spring Boot 4.0, но так как это пока ещё snapshot-версия, некоторые параметры пока не удалось корректно настроить. Поэтому реализовал собственные подходы к версионированию API.
 ```
 
 ---
